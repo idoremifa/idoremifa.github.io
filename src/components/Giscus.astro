@@ -1,0 +1,36 @@
+---
+import { GISCUS } from "@/config";
+---
+
+<div id="giscus-container" class="mt-8"></div>
+
+<script is:inline define:vars={{ giscus: GISCUS }} data-astro-rerun>
+  (function mountGiscus() {
+    const container = document.getElementById("giscus-container");
+    if (!container) return;
+    container.innerHTML = "";
+
+    const theme =
+      document.firstElementChild?.getAttribute("data-theme") === "dark"
+        ? "dark"
+        : "light";
+
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo", giscus.repo);
+    script.setAttribute("data-repo-id", giscus.repoId);
+    script.setAttribute("data-category", giscus.category);
+    script.setAttribute("data-category-id", giscus.categoryId);
+    script.setAttribute("data-mapping", giscus.mapping);
+    script.setAttribute("data-strict", giscus.strict);
+    script.setAttribute("data-reactions-enabled", giscus.reactionsEnabled);
+    script.setAttribute("data-emit-metadata", giscus.emitMetadata);
+    script.setAttribute("data-input-position", giscus.inputPosition);
+    script.setAttribute("data-theme", theme);
+    script.setAttribute("data-lang", giscus.lang);
+    script.setAttribute("data-loading", giscus.loading);
+    script.setAttribute("crossorigin", "anonymous");
+    script.async = true;
+    container.appendChild(script);
+  })();
+</script>

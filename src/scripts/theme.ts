@@ -50,6 +50,18 @@ function reflectPreference(): void {
       .querySelector("meta[name='theme-color']")
       ?.setAttribute("content", bgColor);
   }
+
+  syncGiscusTheme(themeValue);
+}
+
+function syncGiscusTheme(theme: string): void {
+  const iframe = document.querySelector<HTMLIFrameElement>(
+    "iframe.giscus-frame"
+  );
+  iframe?.contentWindow?.postMessage(
+    { giscus: { setConfig: { theme } } },
+    "https://giscus.app"
+  );
 }
 
 // Update the global theme API

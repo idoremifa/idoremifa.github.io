@@ -9,11 +9,12 @@ import EditPost from "@/components/EditPost.astro";
 import ShareLinks from "@/components/ShareLinks.astro";
 import BackButton from "@/components/BackButton.astro";
 import BackToTopButton from "@/components/BackToTopButton.astro";
+import Giscus from "@/components/Giscus.astro";
 import { getPath } from "@/utils/getPath";
 import { slugifyStr } from "@/utils/slugify";
 import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
 import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
-import { SITE } from "@/config";
+import { SITE, GISCUS } from "@/config";
 
 type Props = {
   post: CollectionEntry<"blog">;
@@ -127,6 +128,10 @@ const nextPost =
     <ShareLinks />
 
     <hr class="my-6 border-dashed" />
+
+    {GISCUS.enabled && <Giscus />}
+
+    {GISCUS.enabled && <hr class="my-6 border-dashed" />}
 
     <!-- Previous/Next Post Buttons -->
     <div data-pagefind-ignore class="grid grid-cols-1 gap-6 sm:grid-cols-2">

@@ -6,4 +6,4 @@ tags:
   - meta
 ---
 
-Hi — this is where I'll keep short notes on software I'm building, things I'm learning, and ideas I want to come back to. Posts may switch between English and Korean depending on the topic.
+Hi — this is where I'll keep short notes on software I'm building, things I'm learning, and ideas I want to come back to. Posts may be in English or Korean depending on the topic.

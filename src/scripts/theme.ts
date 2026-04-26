@@ -15,7 +15,7 @@ function getPreferTheme(): string {
   // return initial color scheme if it is set (site default)
   if (initialColorScheme) return initialColorScheme;
 
-  // return user device's prefer color scheme (system fallback)
+  // fall back to the system's preferred color scheme
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? DARK
     : LIGHT;
@@ -84,7 +84,7 @@ if (window.theme) {
 reflectPreference();
 
 function setThemeFeature(): void {
-  // set on load so screen readers can get the latest value on the button
+  // Set on load so screen readers can announce the current theme value
   reflectPreference();
 
   // now this script can find and listen for clicks on the control

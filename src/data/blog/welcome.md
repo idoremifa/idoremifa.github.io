@@ -15,9 +15,7 @@ tags:
 # timezone: Asia/Seoul           # overrides SITE.timezone for this post
 ---
 
-이 파일은 새 글을 쓸 때 복사해서 쓰라고 만든 시드 포스트야. `draft: true`라 빌드 산출물에는 포함되지 않는다.
-
-This is a seed post meant to be copied as a starting template. Because `draft: true` is set, it is excluded from the production build and post listings.
+This is a seed post meant to be copied as a template. Because `draft: true` is set, it is excluded from the production build and post index.
 
 ## Required fields
 
@@ -27,6 +25,6 @@ This is a seed post meant to be copied as a starting template. Because `draft: t
 
 ## Notes
 
-- `tags` defaults to `["others"]` if omitted; lowercase, hyphenated.
-- Filename becomes the slug: `welcome.md` → `/posts/welcome/`.
+- `tags` defaults to `["others"]` if omitted; values are lowercase and hyphenated.
+- The filename becomes the slug: `welcome.md` → `/posts/welcome/`.
 - Markdown supports remark TOC and collapsible sections via the configured plugins.

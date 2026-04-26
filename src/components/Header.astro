@@ -10,7 +10,7 @@ import { SITE } from "@/config";
 
 const { pathname } = Astro.url;
 
-// Remove trailing slash from current pathname if exists
+// Remove trailing slash from the current pathname if it exists
 const currentPath =
   pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
 
@@ -98,7 +98,7 @@ const isActive = (path: string) => {
                   },
                 ]}
                 title="Archives"
-                aria-label="archives"
+                aria-label="Archives"
               >
                 <IconArchive class="hidden sm:inline-block" />
                 <span class="sm:sr-only">Archives</span>
@@ -114,7 +114,7 @@ const isActive = (path: string) => {
               { "[&>svg]:stroke-accent": isActive("/search") },
             ]}
             title="Search"
-            aria-label="search"
+            aria-label="Search"
           >
             <IconSearch />
             <span class="sr-only">Search</span>
@@ -126,7 +126,7 @@ const isActive = (path: string) => {
               <button
                 id="theme-btn"
                 class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent"
-                title="Toggles light & dark"
+                title="Toggle light/dark mode"
                 aria-label="auto"
                 aria-live="polite"
               >
@@ -164,6 +164,6 @@ const isActive = (path: string) => {
 
   toggleNav();
 
-  // Runs on view transitions navigation
+  // Re-runs after each view-transition navigation
   document.addEventListener("astro:after-swap", toggleNav);
 </script>

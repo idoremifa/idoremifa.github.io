@@ -1,8 +1,7 @@
 ---
 import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
-import { PUBLIC_GOOGLE_SITE_VERIFICATION } from "astro:env/client";
-import { SITE } from "@/config";
+import { ANALYTICS, SITE } from "@/config";
 import "@/styles/global.css";
 
 type Props = {
@@ -123,17 +122,34 @@ const structuredData = {
 
     <meta name="theme-color" content="" />
 
-    {
-      // If PUBLIC_GOOGLE_SITE_VERIFICATION is set as an environment variable,
-      // include the google-site-verification meta tag in the head
-      // Learn more: https://support.google.com/webmasters/answer/9008080#meta_tag_verification&zippy=%2Chtml-tag
-      PUBLIC_GOOGLE_SITE_VERIFICATION && (
-        <meta
-          name="google-site-verification"
-          content={PUBLIC_GOOGLE_SITE_VERIFICATION}
-        />
-      )
-    }
+    <meta
+      name="google-site-verification"
+      content={ANALYTICS.googleSiteVerification}
+    />
+
+    <!-- Google Analytics 4 -->
+    <script
+      is:inline
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS.googleAnalyticsId}`}
+    />
+    <script is:inline define:vars={{ gaId: ANALYTICS.googleAnalyticsId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      window.gtag = gtag;
+      gtag("js", new Date());
+      // ClientRouter 전환마다 page_view를 한 번씩만 보내기 위해 자동 발송을 끔
+      gtag("config", gaId, { send_page_view: false });
+      document.addEventListener("astro:page-load", () => {
+        gtag("event", "page_view", {
+          page_path: location.pathname + location.search,
+          page_location: location.href,
+          page_title: document.title,
+        });
+      });
+    </script>
 
     <ClientRouter />
 

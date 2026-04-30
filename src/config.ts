@@ -22,6 +22,11 @@ export const SITE = {
   timezone: "Asia/Seoul", // Default global timezone (IANA format) https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 } as const;
 
+export const ANALYTICS = {
+  googleAnalyticsId: "G-LY9JMQG9L6",
+  googleSiteVerification: "4dYqMmKna5Ik7dOKJh6MfJAwdyBWRSEyMzbXEUu2PDI",
+} as const;
+
 export const GISCUS = {
   enabled: true,
   repo: "idoremifa/idoremifa.github.io",

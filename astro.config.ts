@@ -1,4 +1,4 @@
-import { defineConfig, envField, fontProviders } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import remarkToc from "remark-toc";
@@ -47,15 +47,6 @@ export default defineConfig({
   image: {
     responsiveStyles: true,
     layout: "constrained",
-  },
-  env: {
-    schema: {
-      PUBLIC_GOOGLE_SITE_VERIFICATION: envField.string({
-        access: "public",
-        context: "client",
-        optional: true,
-      }),
-    },
   },
   experimental: {
     preserveScriptOrder: true,

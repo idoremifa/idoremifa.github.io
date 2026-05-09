@@ -20,6 +20,7 @@ export const SITE = {
   dir: "ltr", // "rtl" | "auto"
   lang: "en", // HTML lang code. Leave empty to default to "en"
   timezone: "Asia/Seoul", // Default global timezone (IANA format) https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  tocLabel: "목차", // Heading shown above the post table of contents
 } as const;
 
 export const ANALYTICS = {

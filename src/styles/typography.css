@@ -4,6 +4,7 @@
   /* ===== Override default Tailwind Typography styles ===== */
   .app-prose {
     @apply prose;
+    font-size: var(--text-base);
 
     h1,
     h2,
@@ -11,10 +12,6 @@
     h4,
     th {
       @apply mb-3 text-foreground;
-    }
-
-    h3 {
-      @apply italic;
     }
 
     p,
@@ -67,11 +64,11 @@
     }
 
     code {
-      @apply rounded bg-muted/75 p-1 wrap-break-word text-foreground before:content-none after:content-none;
+      @apply rounded bg-muted/75 p-1 font-normal wrap-break-word text-foreground before:content-none after:content-none;
     }
 
     .astro-code code {
-      @apply flex-[1_0_100%] bg-inherit p-0;
+      @apply flex-[1_0_100%] bg-inherit p-0 font-code;
     }
 
     blockquote {
@@ -87,13 +84,81 @@
     }
 
     pre {
-      @apply focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-dashed;
+      /* Tailwind Typography sets `pre code { font-family: inherit }`, so the
+         `code` font-family above doesn't reach block code. Force it on `pre`
+         so block code inherits the same font. */
+      @apply font-code focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-dashed;
     }
+  }
+
+  .post-prose {
+    h2 {
+      @apply mt-14 border-t border-border pt-10;
+    }
+
+    table {
+      thead th {
+        @apply bg-muted/75 text-center font-bold;
+      }
+    }
+  }
+
+  html[data-theme="dark"] .post-prose {
+    table {
+      thead th {
+        background-color: color-mix(
+          in srgb,
+          var(--accent) 24%,
+          var(--background)
+        );
+        @apply text-foreground;
+      }
+    }
+  }
+
+  .toc-link[data-active-section] {
+    @apply text-foreground;
+  }
+
+  .toc-link[aria-current="location"] {
+    @apply font-bold text-accent underline;
   }
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
   .astro-code {
+    /* Width of the line-number gutter. The marker slot keeps Shiki diff
+       symbols clear of both the line numbers and the code text. */
+    --code-line-num-w: 2.75rem;
+    --code-diff-marker-w: 1rem;
+    --code-line-num-gap: 0.75rem;
+
     @apply flex border bg-(--shiki-light-bg) text-(--shiki-light) outline-border [&_span]:text-(--shiki-light);
+
+    code {
+      counter-reset: code-line;
+    }
+
+    .line {
+      counter-increment: code-line;
+      display: inline-block;
+      min-width: 100%;
+      padding-inline-end: 1rem;
+
+      &::before {
+        content: counter(code-line);
+        display: inline-block;
+        width: var(--code-line-num-w);
+        margin-inline-end: calc(
+          var(--code-diff-marker-w) + var(--code-line-num-gap)
+        );
+        padding-inline-end: 0.75rem;
+        border-inline-end: 1px solid var(--border);
+        color: var(--foreground);
+        text-align: end;
+        opacity: 0.45;
+        user-select: none;
+      }
+    }
   }
 
   html[data-theme="dark"] .astro-code {
@@ -104,10 +169,10 @@
   /* https://shiki.style/packages/transformers */
   .astro-code {
     .line.diff.add {
-      @apply relative inline-block w-full bg-green-400/20 before:absolute before:-left-3 before:text-green-500 before:content-['+'];
+      @apply relative inline-block w-full bg-green-400/20 after:absolute after:left-[calc(var(--code-line-num-w)+0.35rem)] after:w-(--code-diff-marker-w) after:text-center after:text-green-500 after:content-['+'];
     }
     .line.diff.remove {
-      @apply relative inline-block w-full bg-red-500/20 before:absolute before:-left-3 before:text-red-500 before:content-['-'];
+      @apply relative inline-block w-full bg-red-500/20 after:absolute after:left-[calc(var(--code-line-num-w)+0.35rem)] after:w-(--code-diff-marker-w) after:text-center after:text-red-500 after:content-['-'];
     }
     .line.highlighted {
       @apply inline-block w-full bg-slate-400/20;

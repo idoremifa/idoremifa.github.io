@@ -23,7 +23,7 @@ export default defineConfig({
     remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
     shikiConfig: {
       // For more themes, visit https://shiki.style/themes
-      themes: { light: "min-light", dark: "night-owl" },
+      themes: { light: "github-light-default", dark: "github-dark-dimmed" },
       defaultColor: false,
       wrap: false,
       transformers: [
@@ -58,6 +58,30 @@ export default defineConfig({
         fallbacks: ["monospace"],
         weights: [300, 400, 500, 600, 700],
         styles: ["normal", "italic"],
+      },
+      {
+        name: "Pretendard",
+        cssVariable: "--font-pretendard",
+        provider: "local",
+        variants: [
+          {
+            src: [
+              {
+                url: "./src/assets/fonts/PretendardVariable.woff2",
+                tech: "variations",
+              },
+            ],
+            weight: "45 920",
+            style: "normal",
+            display: "swap",
+          },
+        ],
+        fallbacks: [
+          "Apple SD Gothic Neo",
+          "Noto Sans KR",
+          "system-ui",
+          "sans-serif",
+        ],
       },
     ],
   },

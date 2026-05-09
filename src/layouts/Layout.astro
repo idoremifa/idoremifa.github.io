@@ -65,6 +65,7 @@ const structuredData = {
       cssVariable="--font-google-sans-code"
       preload={[{ subset: "latin", weight: 400, style: "normal" }]}
     />
+    <Font cssVariable="--font-pretendard" preload={false} />
 
     <!-- General Meta Tags -->
     <title>{title}</title>
@@ -132,11 +133,11 @@ const structuredData = {
       is:inline
       async
       src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS.googleAnalyticsId}`}
-    />
+    ></script>
     <script is:inline define:vars={{ gaId: ANALYTICS.googleAnalyticsId }}>
       window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
+      function gtag(...args) {
+        dataLayer.push(args);
       }
       window.gtag = gtag;
       gtag("js", new Date());

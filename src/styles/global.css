@@ -21,7 +21,29 @@ html[data-theme="dark"] {
 }
 
 @theme inline {
-  --font-app: var(--font-google-sans-code);
+  --font-app: var(--font-pretendard);
+  --font-code: var(--font-google-sans-code);
+  /* Single source of truth for the article column width. Layout helpers
+     (`max-w-app`, `app-layout`, `.post-toc`) all derive from this. */
+  --max-w-app: 48rem;
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.35;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.55;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.7;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.6;
+  --text-xl: 1.3125rem;
+  --text-xl--line-height: 1.45;
+  --text-2xl: 1.625rem;
+  --text-2xl--line-height: 1.3;
+  --text-3xl: 2rem;
+  --text-3xl--line-height: 1.2;
+  --text-4xl: 2.5rem;
+  --text-4xl--line-height: 1.12;
+  --text-5xl: 3.25rem;
+  --text-5xl--line-height: 1.05;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
@@ -39,7 +61,7 @@ html[data-theme="dark"] {
     @apply overflow-y-scroll scroll-smooth;
   }
   body {
-    @apply flex min-h-svh flex-col bg-background font-app text-foreground selection:bg-accent/75 selection:text-background;
+    @apply flex min-h-svh flex-col bg-background font-app text-base text-foreground selection:bg-accent/75 selection:text-background;
   }
   a,
   button {
@@ -52,11 +74,28 @@ html[data-theme="dark"] {
 }
 
 @utility max-w-app {
-  @apply max-w-3xl;
+  max-width: var(--max-w-app);
 }
 
 @utility app-layout {
   @apply mx-auto w-full max-w-app px-4;
+}
+
+/* Sticky table of contents to the right of the article column.
+   Geometry is derived from `--max-w-app` so adjusting the article width
+   shifts the TOC accordingly. Hidden below xl via `hidden xl:block`. */
+.post-toc {
+  --toc-side-margin: 1rem;
+  position: fixed;
+  top: 6rem;
+  left: calc(50% + var(--max-w-app) / 2 + var(--toc-side-margin));
+  width: min(
+    18rem,
+    calc(50vw - var(--max-w-app) / 2 - var(--toc-side-margin) * 2)
+  );
+  min-width: 13rem;
+  max-height: calc(100svh - 8rem);
+  overflow-y: auto;
 }
 
 .active-nav {

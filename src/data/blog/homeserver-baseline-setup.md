@@ -9,7 +9,7 @@ tags:
   - infra
 ---
 
-안녕하세요, 집에서도 작은 인프라를 직접 운영해보고 싶었던 Ido예요. 오늘은 미니 PC 한 대를 홈서버로 세팅하면서 운영의 기본 골격을 잡아간 이야기를 풀어보려고 해요. 막상 해보니 별것 아닌 줄 알았던 단계마다 잠깐씩 멈춰 서게 되는 순간이 있더라고요.
+오늘은 미니 PC 한 대를 홈서버로 세팅하면서 운영의 기본 골격을 잡아간 이야기를 풀어보려고 해요. 막상 해보니 별것 아닌 줄 알았던 단계마다 잠깐씩 멈춰 서게 되는 순간이 있더라고요.
 
 언젠가부터 집에도 서버 한 대쯤 두고 싶다는 생각이 있었어요. 단순히 앱 몇 개를 띄우는 PC가 아니라, 접속 경로와 업데이트, 방화벽, 디렉터리 구조까지 어느 정도 기준을 갖춘 작지만 단단한 운영 인프라를 한 번 만들어보고 싶었거든요.
 
@@ -398,21 +398,14 @@ sudo usermod -aG sudo 사용자명
 
 서버 관리에 자주 쓰는 기본 도구를 같이 설치해둬요. 문제가 생겼을 때 CPU, 메모리, 디스크, 네트워크, DNS, 로그를 바로 들여다볼 수 있어야 그나마 마음이 놓이더라고요.
 
-| 도구               | 하는 일                                  | 홈서버에서 쓰는 상황                            | 설치     |
-| ----------------- | -------------------------------------- | ------------------------------------------ | ------- |
-| `curl`            | URL로 HTTP 요청을 보내거나 파일을 다운로드      | API 테스트, 설치 스크립트 실행, 서버 응답 확인      | 필수     |
-| `ca-certificates` | 신뢰할 CA 인증서 묶음                       | HTTPS 접속, 패키지 저장소, Docker/Git 인증서 검증 | 필수     |
-| `gnupg`           | GPG 키/서명 검증 도구                      | 외부 apt 저장소 키 등록, 패키지 서명 검증           | 필수    |
-| `git`             | Git 저장소 clone/pull/commit 관리         | 프로젝트 코드 배포, 설정 파일 버전 관리             | 기본 추천 |
-| `htop`            | CPU/메모리/프로세스 상태를 보는 TUI 도구       | 서버가 느릴 때 어떤 프로세스가 문제인지 확인          | 기본 추천 |
-| `tmux`            | 터미널 세션 유지/분할 도구                   | SSH가 끊겨도 작업 계속 유지                      | 기본 추천 |
-| `wget`            | 파일 다운로드                             | 릴리스 파일, 설치 파일, 백업 파일 다운로드           | 선택     |
-| `btop`            | 더 보기 좋은 시스템 모니터링 TUI 도구          | CPU, RAM, 디스크, 네트워크 상태를 한 화면에서 확인  | 선택     |
-| `dnsutils`        | dig, nslookup 등 DNS 진단 도구 모음        | 도메인/IP 해석 문제 확인                        | 선택     |
-| `unzip`           | zip 압축 해제                            | 다운로드한 zip 파일 풀기                        | 선택     |
-| `lsb-release`     | Ubuntu 배포판 정보 출력                    | 설치 스크립트가 Ubuntu 버전/코드네임 확인할 때 사용   | 선택     |
-| `vim`             | 터미널 텍스트 편집기                        | 서버에서 설정 파일 수정                          | 선택     |
-| `net-tools`       | ifconfig, netstat 등 구형 네트워크 도구 모음 | 네트워크 상태 확인, 포트 확인                     | 선택     |
+| 도구               | 하는 일                                  | 홈서버에서 쓰는 상황                            | 설치 |
+| ----------------- | -------------------------------------- | ------------------------------------------ | --- |
+| `curl`            | URL로 HTTP 요청을 보내거나 파일을 다운로드      | API 테스트, 설치 스크립트 실행, 서버 응답 확인      | 필수 |
+| `ca-certificates` | 신뢰할 CA 인증서 묶음                       | HTTPS 접속, 패키지 저장소, Docker/Git 인증서 검증 | 필수 |
+| `gnupg`           | GPG 키/서명 검증 도구                      | 외부 apt 저장소 키 등록, 패키지 서명 검증           | 필수 |
+| `git`             | Git 저장소 clone/pull/commit 관리         | 프로젝트 코드 배포, 설정 파일 버전 관리             | 추천 |
+| `htop`            | CPU/메모리/프로세스 상태를 보는 TUI 도구       | 서버가 느릴 때 어떤 프로세스가 문제인지 확인          | 추천 |
+| `tmux`            | 터미널 세션 유지/분할 도구                   | SSH가 끊겨도 작업 계속 유지                      | 추천 |
 
 #### [ 실행 명령어 ]
 
@@ -829,37 +822,30 @@ free -h
 
 아래 항목이 만족되면 기본 홈서버 세팅 1차 완료로 볼 수 있어요.
 
-| 구분 | 항목                              | 확인 방법                                                                                    | 정상 기준                                                                       |
-| --- | -------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
-| 설치 | Ubuntu 패키지를 업데이트했다.         | `sudo apt update`                                                                          | 업그레이드 가능한 패키지가 없거나 적게 표시된다.                                          |
-| 설치 | 서버 이름을 정했다.                  | `hostname`                                                                                 | `homeserver`처럼 내가 정한 이름이 나온다.                                            |
-| 설치 | 내부 IP가 고정되어 있다.              | `hostname -I`                                                                              | 재부팅 후에도 같은 `192.168.x.x` 주소가 나온다.                                       |
-| 접속 | 초기 설정 중 내부망 SSH 접속을 확인했다. | 맥북에서 `ssh 사용자명@서버IP`                                                                   | Tailscale-only로 좁히기 전 SSH 키로 정상 접속된다.                                   |
-| 접속 | Tailscale 경유 SSH 접속이 된다.      | 맥북에서 `ssh 사용자명@100.x.y.z` 또는 `ssh 사용자명@homeserver`                                   | Tailscale 네트워크를 통해 정상 접속된다.                                             |
-| 보안 | SSH 설정 파일이 분리되어 있다.         | `ls -l /etc/ssh/sshd_config.d/00-homeserver-hardening.conf`                                | 파일이 존재한다.                                                                  |
-| 보안 | SSH 설정 문법이 정상이다.             | `sudo sshd -t`                                                                             | 아무 출력이 없다.                                                                 |
-| 보안 | SSH 비밀번호/root 로그인이 막혀 있다.  | `sudo sshd -T`                                                                             | `passwordauthentication no`, `permitrootlogin no`가 나온다.                      |
-| 보안 | UFW 방화벽이 켜져 있다.              | `sudo ufw status verbose`                                                                  | `Status: active`가 나온다.                                                       |
-| 보안 | SSH가 Tailscale 경유로만 허용된다.   | `sudo ufw status verbose`                                                                   | `22/tcp on tailscale0` 허용 규칙이 있고 일반 `OpenSSH` 허용 규칙은 없다.               |
-| 운영 | 자동 보안 업데이트가 켜져 있다.        | `apt-config dump APT::Periodic`, `systemctl status apt-daily.timer apt-daily-upgrade.timer` | `Update-Package-Lists`와 `Unattended-Upgrade`가 `1`이고 관련 타이머가 잡혀 있다.      |
-| 운영 | 타임존과 시간 동기화가 맞다.           | `timedatectl`                                                                               | `Asia/Seoul`, `System clock synchronized: yes`, `NTP service: active`가 나온다. |
-| 운영 | 기본 관리 도구가 설치되어 있다.        | `dpkg -s curl ca-certificates gnupg git tmux htop`                                          | 각 패키지에 `Status: install ok installed`가 나온다.                               |
-| 운영 | 현재 사용자가 sudo 권한을 가지고 있다.  | `groups`                                                                                    | 출력에 `sudo`가 포함된다.                                                         |
-| 운영 | 운영 디렉터리를 만들었다.             | `ls -ld /srv/docker /srv/data /srv/backups /srv/logs`                                       | 디렉터리가 존재하고 내 사용자 소유다.                                                  |
-| 원격 | 맥북과 홈서버가 같은 tailnet에 있다.   | 홈서버에서 `tailscale status`                                                                  | 맥북과 홈서버가 함께 보인다.                                                        |
-| 원격 | 홈서버의 Tailscale IP를 확인했다.    | `tailscale ip -4`                                                                            | `100.x.y.z` 형태의 IP가 나온다.                                                  |
-| 원격 | SSH 포트포워딩을 하지 않는다.         | 공유기 포트포워딩/NAT/가상 서버 메뉴                                                                 | 외부 22 또는 2222 등에서 홈서버 22번으로 가는 규칙이 없다.                              |
+| 항목                              | 확인 방법                                                                                    | 정상 기준                                                                       |
+| -------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
+| Ubuntu 패키지를 업데이트했다.         | `sudo apt update`                                                                          | 업그레이드 가능한 패키지가 없거나 적게 표시된다.                                          |
+| 서버 이름을 정했다.                  | `hostname`                                                                                 | `homeserver`처럼 내가 정한 이름이 나온다.                                            |
+| 내부 IP가 고정되어 있다.              | `hostname -I`                                                                              | 재부팅 후에도 같은 `192.168.x.x` 주소가 나온다.                                       |
+| 초기 설정 중 내부망 SSH 접속을 확인했다. | 맥북에서 `ssh 사용자명@서버IP`                                                                   | Tailscale-only로 좁히기 전 SSH 키로 정상 접속된다.                                   |
+| Tailscale 경유 SSH 접속이 된다.      | 맥북에서 `ssh 사용자명@100.x.y.z` 또는 `ssh 사용자명@homeserver`                                   | Tailscale 네트워크를 통해 정상 접속된다.                                             |
+| SSH 설정 파일이 분리되어 있다.         | `ls -l /etc/ssh/sshd_config.d/00-homeserver-hardening.conf`                                | 파일이 존재한다.                                                                  |
+| SSH 설정 문법이 정상이다.             | `sudo sshd -t`                                                                             | 아무 출력이 없다.                                                                 |
+| SSH 비밀번호/root 로그인이 막혀 있다.  | `sudo sshd -T`                                                                             | `passwordauthentication no`, `permitrootlogin no`가 나온다.                      |
+| UFW 방화벽이 켜져 있다.              | `sudo ufw status verbose`                                                                  | `Status: active`가 나온다.                                                       |
+| SSH가 Tailscale 경유로만 허용된다.   | `sudo ufw status verbose`                                                                   | `22/tcp on tailscale0` 허용 규칙이 있고 일반 `OpenSSH` 허용 규칙은 없다.               |
+| 자동 보안 업데이트가 켜져 있다.        | `apt-config dump APT::Periodic`, `systemctl status apt-daily.timer apt-daily-upgrade.timer` | `Update-Package-Lists`와 `Unattended-Upgrade`가 `1`이고 관련 타이머가 잡혀 있다.      |
+| 타임존과 시간 동기화가 맞다.           | `timedatectl`                                                                               | `Asia/Seoul`, `System clock synchronized: yes`, `NTP service: active`가 나온다. |
+| 기본 관리 도구가 설치되어 있다.        | `dpkg -s curl ca-certificates gnupg git tmux htop`                                          | 각 패키지에 `Status: install ok installed`가 나온다.                               |
+| 현재 사용자가 sudo 권한을 가지고 있다.  | `groups`                                                                                    | 출력에 `sudo`가 포함된다.                                                         |
+| 운영 디렉터리를 만들었다.             | `ls -ld /srv/docker /srv/data /srv/backups /srv/logs`                                       | 디렉터리가 존재하고 내 사용자 소유다.                                                  |
+| 맥북과 홈서버가 같은 tailnet에 있다.   | 홈서버에서 `tailscale status`                                                                  | 맥북과 홈서버가 함께 보인다.                                                        |
+| 홈서버의 Tailscale IP를 확인했다.    | `tailscale ip -4`                                                                            | `100.x.y.z` 형태의 IP가 나온다.                                                  |
+| SSH 포트포워딩을 하지 않는다.         | 공유기 포트포워딩/NAT/가상 서버 메뉴                                                                 | 외부 22 또는 2222 등에서 홈서버 22번으로 가는 규칙이 없다.                              |
 
 ## 마치며
 
 여기까지가 제 홈서버의 첫 번째 골격이에요. 이 기본 세팅이 한 번 잡히고 나면, 그 다음은 비교적 자연스럽게 가지를 뻗어갈 수 있더라고요.
-
-1. Docker 설치
-2. Docker Compose 운영 구조 만들기
-3. 서비스별 Tailscale 접근 정책 또는 reverse proxy 구성
-4. 모니터링 도구 구성
-5. 로그 확인 도구 구성
-6. 백업 자동화
 
 처음에는 저도 'Docker만 빨리 깔고 서비스 올리면 되지 않나' 싶은 마음이었는데, 막상 해보니 욕심내서 많은 걸 한꺼번에 올리는 것보다 기본 운영 골격을 먼저 단단히 잡아두는 편이 훨씬 마음 편하다는 걸 새삼 느꼈어요.
 

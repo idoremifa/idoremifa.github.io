@@ -41,7 +41,7 @@ const tocSections: Array<
   (typeof headings)[number] & { children: Array<(typeof headings)[number]> }
 > = [];
 const tocLinkClass =
-  "toc-link block wrap-break-word text-foreground/80 decoration-dashed underline-offset-4 transition-colors hover:text-accent hover:underline";
+  "toc-link block wrap-break-word text-foreground/80 underline-offset-4 hover:text-accent hover:underline";
 let currentSection: (typeof tocSections)[number] | undefined;
 
 for (const heading of headings) {
